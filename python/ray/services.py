@@ -833,6 +833,12 @@ def start_ui(redis_address, stdout_file=None, stderr_file=None):
         "--NotebookApp.open_browser=False",
         "--NotebookApp.token={}".format(token)
     ]
+
+    jupyter_config = os.environ.get("RAY_JUPYTER_CONFIG", None)
+    if jupyter_config:
+        logger.info("Setting custom config for Jupyter '%s'.", jupyter_config)
+        command.append("--config={}".format(jupyter_config))
+
     # If the user is root, add the --allow-root flag.
     if os.geteuid() == 0:
         command.append("--allow-root")
